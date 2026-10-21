@@ -9,7 +9,7 @@ async function saveShell() {
   if (!res.ok) return;
   const html = await res.clone().text();
   await cache.put('/', res);
-  const files = new Set(['/manifest.webmanifest', '/favicon.svg']);
+  const files = new Set(['/manifest.webmanifest', '/favicon.svg', '/icons/icon-192.png', '/icons/apple-touch-icon.png']);
   for (const m of html.matchAll(/(?:src|href)="(\/[^"]+)"/g)) files.add(m[1]);
   // Files with a hash in the name never change, so only fetch what is not saved yet.
   await Promise.all([...files].map(async (f) => { if (!(await cache.match(f))) await fetch(f).then((r) => (r.ok ? cache.put(f, r) : null)).catch(() => null); }));
